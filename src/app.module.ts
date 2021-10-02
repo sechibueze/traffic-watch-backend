@@ -5,6 +5,8 @@ import { AccountsModule } from './accounts/accounts.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Account } from './accounts/account.entity';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -18,8 +20,15 @@ import { ConfigModule } from '@nestjs/config';
       entities: [Account],
       synchronize: true,
     }),
-
+    // {
+    //   ...JwtModule.register({
+    //     secret: 'secret',
+    //     signOptions: { expiresIn: '60s' },
+    //   }),
+    //   global: true,
+    // },
     AccountsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

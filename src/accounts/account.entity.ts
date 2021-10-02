@@ -1,22 +1,31 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  BeforeInsert,
+  Index,
+} from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
-@Entity()
+@Entity({ name: 'Accounts' })
+@Index(['email'], { unique: true })
 export class Account {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false })
   fullname: string;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false })
   email: string;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false, select: false })
   password: string;
-
-  @Column()
-  confirm_password: string;
 
   @Column({ default: true })
   is_active: boolean;
+
+  @BeforeInsert() async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
 }
