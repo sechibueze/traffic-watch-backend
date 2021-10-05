@@ -20,8 +20,12 @@ import { AuthModule } from './auth/auth.module';
       // database: process.env.DB_NAME,
       entities: [Account],
       synchronize: true,
-      extra: {
-        ssl: true,
+
+      // extra: {
+      //   ssl: true,
+      // },
+      ssl: {
+        rejectUnauthorized: false,
       },
     }),
     // {
